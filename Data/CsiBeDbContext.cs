@@ -10,6 +10,7 @@ namespace CSI_BE.Data
         public CsiBeDbContext(DbContextOptions<CsiBeDbContext> options) : base(options) {  }
         public DbSet<IdentityUser> AspNetUsers {  get; set; }
         public DbSet<CSI_BE.Models.Cnae> Cnae { get; set; } = default!;
+        public DbSet<CSI_BE.Models.Socio> Socio { get; set; } = default!;
         
     }
 }

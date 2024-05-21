@@ -14,47 +14,47 @@ namespace CSI_BE.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class CnaesController : ControllerBase
+    public class SociosController : ControllerBase
     {
         private readonly CsiBeDbContext _context;
 
-        public CnaesController(CsiBeDbContext context)
+        public SociosController(CsiBeDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Cnaes
+        // GET: api/Socios
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Cnae>>> GetCnae()
+        public async Task<ActionResult<IEnumerable<Socio>>> GetSocio()
         {
-            return await _context.Cnae.ToListAsync();
+            return await _context.Socio.ToListAsync();
         }
 
-        // GET: api/Cnaes/5
+        // GET: api/Socios/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Cnae>> GetCnae(int id)
+        public async Task<ActionResult<Socio>> GetSocio(int id)
         {
-            var cnae = await _context.Cnae.FindAsync(id);
+            var socio = await _context.Socio.FindAsync(id);
 
-            if (cnae == null)
+            if (socio == null)
             {
                 return NotFound();
             }
 
-            return cnae;
+            return socio;
         }
 
-        // PUT: api/Cnaes/5
+        // PUT: api/Socios/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCnae(int id, Cnae cnae)
+        public async Task<IActionResult> PutSocio(int id, Socio socio)
         {
-            if (id != cnae.Id)
+            if (id != socio.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(cnae).State = EntityState.Modified;
+            _context.Entry(socio).State = EntityState.Modified;
 
             try
             {
@@ -62,7 +62,7 @@ namespace CSI_BE.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CnaeExists(id))
+                if (!SocioExists(id))
                 {
                     return NotFound();
                 }
@@ -75,36 +75,36 @@ namespace CSI_BE.Controllers
             return NoContent();
         }
 
-        // POST: api/Cnaes
+        // POST: api/Socios
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Cnae>> PostCnae(Cnae cnae)
+        public async Task<ActionResult<Socio>> PostSocio(Socio socio)
         {
-            _context.Cnae.Add(cnae);
+            _context.Socio.Add(socio);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCnae", new { id = cnae.Id }, cnae);
+            return CreatedAtAction("GetSocio", new { id = socio.Id }, socio);
         }
 
-        // DELETE: api/Cnaes/5
+        // DELETE: api/Socios/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCnae(int id)
+        public async Task<IActionResult> DeleteSocio(int id)
         {
-            var cnae = await _context.Cnae.FindAsync(id);
-            if (cnae == null)
+            var socio = await _context.Socio.FindAsync(id);
+            if (socio == null)
             {
                 return NotFound();
             }
 
-            _context.Cnae.Remove(cnae);
+            _context.Socio.Remove(socio);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool CnaeExists(int id)
+        private bool SocioExists(int id)
         {
-            return _context.Cnae.Any(e => e.Id == id);
+            return _context.Socio.Any(e => e.Id == id);
         }
     }
 }

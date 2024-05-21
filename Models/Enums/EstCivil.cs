@@ -8,7 +8,7 @@
         Casada = 3,
         Divorciado = 4,
         Divorciada = 5,
-        Viúvo=6,
-        Viúva=7
+        Viúvo = 6,
+        Viúva = 7
     }
 }
