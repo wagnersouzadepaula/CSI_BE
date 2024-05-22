@@ -82,6 +82,14 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
+// Habilita Cors
+app.UseCors(c =>
+{
+    c.AllowAnyHeader();
+    c.AllowAnyMethod();
+    c.AllowAnyOrigin();
+});
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
