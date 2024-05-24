@@ -1,4 +1,5 @@
 using CSI_BE.Data;
+using CSI_BE.Extensions.IdentityUsers;
 using CSI_BE.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -10,9 +11,8 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
     {
@@ -56,6 +56,8 @@ builder.Services.AddDbContext<CsiBeDbContext>(options => options.UseNpgsql(build
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<CsiBeDbContext>();
+
+builder.Services.AddScoped<IAppIdentityUser, AppIdentityUser>();
 
 // Pegar o Token
 var JwtSettingsSection = builder.Configuration.GetSection("JwtSettings");

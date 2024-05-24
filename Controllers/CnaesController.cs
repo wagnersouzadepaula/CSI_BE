@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CSI_BE.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CnaesController : ControllerBase

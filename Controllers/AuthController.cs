@@ -1,9 +1,11 @@
-﻿using CSI_BE.Models;
+﻿using CSI_BE.Extensions.IdentityUsers;
+using CSI_BE.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 
 namespace CSI_BE.Controllers
@@ -15,17 +17,25 @@ namespace CSI_BE.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;    
         private readonly JwtSettings _jwtSettings;
+        private readonly AppIdentityUser _identityUser;
 
         public AuthController(SignInManager<IdentityUser> signInManager, 
                               UserManager<IdentityUser> userManager, 
-                              IOptions<JwtSettings> jwtSettings)
+                              IOptions<JwtSettings> jwtSettings,
+                              IAppIdentityUser user
+                              )
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _jwtSettings = jwtSettings.Value;
+            if (user.IsAuthenticated())
+            {
+                UserId = user.GetUserId();
+            }
         }
 
-
+        public Guid UserId { get; set; }
+        public string UserName { get; set; }
 
         [HttpPost("registrar")]
         public async Task<ActionResult> Registrar(RegisterUserViewModel registerUser)
@@ -75,9 +85,8 @@ namespace CSI_BE.Controllers
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             });
             var encodedToken = tokenHandler.WriteToken(token);
-            var user = User.Identity.Name;
-            string retorno = "{ 'UserName': '" + user + "', 'token': '" + encodedToken + "'}";
-            return retorno;
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return "{ 'Id': '" + userIdClaim + "', 'token': '" + encodedToken + "'}";
         }
     }
 }

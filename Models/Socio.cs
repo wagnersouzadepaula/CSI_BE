@@ -13,7 +13,7 @@ namespace CSI_BE.Models
         [Required]
         public EstCivil EstadoCivil { get; set; }
 
-        public string MaioridadeCivil { get; set; } = "maior de idade";
+        public string MaioridadeCivil { get; } = "maior de idade";
 
         [Required]
         public string Profissao { get; set; }
