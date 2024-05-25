@@ -31,6 +31,6 @@ namespace CSI_BE.Models
         public string Cep { get; set; }
 
         [Required]
-        public string UserEmail { get; set; }
+        public string UserId { get; set; }
     }
 }

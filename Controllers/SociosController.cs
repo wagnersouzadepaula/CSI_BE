@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using CSI_BE.Data;
 using CSI_BE.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace CSI_BE.Controllers
 {
@@ -25,14 +27,16 @@ namespace CSI_BE.Controllers
 
         // GET: api/Socios
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Socio>>> GetSocio()
+        [Route("{userId}")]
+
+        public async Task<ActionResult<IEnumerable<Socio>>> GetSocio(string userId)
         {
-            return await _context.Socio.ToListAsync();
+            return await _context.Socio.Where(e => e.UserId == userId).ToListAsync();
         }
 
         // GET: api/Socios/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Socio>> GetSocio(int id)
+        [HttpGet("{userId}/{id}")]
+        public async Task<ActionResult<Socio>> GetSocio(string userId, int id)
         {
             var socio = await _context.Socio.FindAsync(id);
 
@@ -49,11 +53,13 @@ namespace CSI_BE.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutSocio(int id, Socio socio)
         {
+
             if (id != socio.Id)
             {
                 return BadRequest();
             }
 
+            socio = ToUpperCase(socio);
             _context.Entry(socio).State = EntityState.Modified;
 
             try
@@ -77,9 +83,10 @@ namespace CSI_BE.Controllers
 
         // POST: api/Socios
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost("")]
         public async Task<ActionResult<Socio>> PostSocio(Socio socio)
         {
+            socio = ToUpperCase(socio);
             _context.Socio.Add(socio);
             await _context.SaveChangesAsync();
 
@@ -87,10 +94,10 @@ namespace CSI_BE.Controllers
         }
 
         // DELETE: api/Socios/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSocio(int id)
+        [HttpDelete("{userId}/{id}")]
+        public async Task<IActionResult> DeleteSocio(string userId,int id )
         {
-            var socio = await _context.Socio.FindAsync(id);
+            var socio = await _context.Socio.Where(e => e.UserId == userId && e.Id == id).FirstAsync();
             if (socio == null)
             {
                 return NotFound();
@@ -105,6 +112,24 @@ namespace CSI_BE.Controllers
         private bool SocioExists(int id)
         {
             return _context.Socio.Any(e => e.Id == id);
+        }
+
+        private Socio ToUpperCase(Socio socio)
+        {
+            socio.Nome = socio.Nome.ToUpper();
+            socio.Endereco =  socio.Endereco.ToUpper();
+            socio.NroImovel = socio.NroImovel.ToUpper();
+            socio.Complemento = socio.Complemento.ToUpper();
+            socio.Bairro = socio.Bairro.ToUpper();
+            socio.Cidade = socio.Cidade.ToUpper();
+            socio.Uf = socio.Uf.ToUpper();
+            socio.Cep = socio.Cep.ToUpper();
+            socio.Nacionalidade = socio.Nacionalidade.ToUpper();
+            socio.Profissao = socio.Profissao.ToUpper();
+            socio.Rg = socio.Rg.ToUpper();
+            socio.Cpf = socio.Cpf.ToUpper();
+
+            return socio;
         }
     }
 }

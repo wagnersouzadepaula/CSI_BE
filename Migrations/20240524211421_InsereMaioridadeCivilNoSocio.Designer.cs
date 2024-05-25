@@ -3,6 +3,7 @@ using System;
 using CSI_BE.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CSI_BE.Migrations
 {
     [DbContext(typeof(CsiBeDbContext))]
-    partial class CsiBeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240524211421_InsereMaioridadeCivilNoSocio")]
+    partial class InsereMaioridadeCivilNoSocio
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -76,6 +79,10 @@ namespace CSI_BE.Migrations
 
                     b.Property<int>("EstadoCivil")
                         .HasColumnType("integer");
+
+                    b.Property<string>("MaioridadeCivil")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Nacionalidade")
                         .IsRequired()
