@@ -7,14 +7,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CSI_BE.Data;
 using CSI_BE.Models;
-using Microsoft.AspNetCore.Authorization;
+using System.Globalization;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CSI_BE.Controllers
 {
-    //[Authorize]
-    [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class SociosController : ControllerBase
     {
@@ -25,18 +25,31 @@ namespace CSI_BE.Controllers
             _context = context;
         }
 
-        // GET: api/Socios
+        // GET: api/Socios/todosSocios/7de3028b-50f4-4fe4-82ef-573d31bedee3
         [HttpGet]
-        [Route("{userId}")]
-
+        [Route("api/socios/todosSocios/{userId}")]
         public async Task<ActionResult<IEnumerable<Socio>>> GetSocio(string userId)
         {
             return await _context.Socio.Where(e => e.UserId == userId).ToListAsync();
         }
 
+        // GET: api/Socios/7de3028b-50f4-4fe4-82ef-573d31bedee3/5
+        [HttpGet("api/socios/{userId}/{id}")]
+        public async Task<ActionResult<Socio>> GetSocio(string userId,int id)
+        {
+            var socio = await _context.Socio.Where(e => e.UserId == userId && e.Id == id).FirstOrDefaultAsync();
+
+            if (socio == null)
+            {
+                return NotFound();
+            }
+
+            return socio;
+        }
+
         // GET: api/Socios/5
-        [HttpGet("{userId}/{id}")]
-        public async Task<ActionResult<Socio>> GetSocio(string userId, int id)
+        [HttpGet("api/socios/{id}")]
+        public async Task<ActionResult<Socio>> GetSocio(int id)
         {
             var socio = await _context.Socio.FindAsync(id);
 
@@ -50,16 +63,15 @@ namespace CSI_BE.Controllers
 
         // PUT: api/Socios/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("api/socios/{id}")]
         public async Task<IActionResult> PutSocio(int id, Socio socio)
         {
-
             if (id != socio.Id)
             {
                 return BadRequest();
             }
 
-            socio = ToUpperCase(socio);
+            socio = FormatarTexto(socio);
             _context.Entry(socio).State = EntityState.Modified;
 
             try
@@ -83,10 +95,10 @@ namespace CSI_BE.Controllers
 
         // POST: api/Socios
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost("")]
+        [HttpPost("api/socios/")]
         public async Task<ActionResult<Socio>> PostSocio(Socio socio)
         {
-            socio = ToUpperCase(socio);
+            //socio = FormatarTexto(socio);
             _context.Socio.Add(socio);
             await _context.SaveChangesAsync();
 
@@ -94,10 +106,10 @@ namespace CSI_BE.Controllers
         }
 
         // DELETE: api/Socios/5
-        [HttpDelete("{userId}/{id}")]
-        public async Task<IActionResult> DeleteSocio(string userId,int id )
+        [HttpDelete("api/socios/{id}")]
+        public async Task<IActionResult> DeleteSocio(int id)
         {
-            var socio = await _context.Socio.Where(e => e.UserId == userId && e.Id == id).FirstAsync();
+            var socio = await _context.Socio.FindAsync(id);
             if (socio == null)
             {
                 return NotFound();
@@ -114,20 +126,21 @@ namespace CSI_BE.Controllers
             return _context.Socio.Any(e => e.Id == id);
         }
 
-        private Socio ToUpperCase(Socio socio)
+        private Socio FormatarTexto(Socio socio)
         {
-            socio.Nome = socio.Nome.ToUpper();
-            socio.Endereco =  socio.Endereco.ToUpper();
-            socio.NroImovel = socio.NroImovel.ToUpper();
-            socio.Complemento = socio.Complemento.ToUpper();
-            socio.Bairro = socio.Bairro.ToUpper();
-            socio.Cidade = socio.Cidade.ToUpper();
+            TextInfo myTI = new CultureInfo("pt-BR", false).TextInfo;
+            socio.Nome = myTI.ToTitleCase(socio.Nome);
+            socio.Endereco = myTI.ToTitleCase(socio.Endereco);
+            socio.NroImovel = myTI.ToTitleCase(socio.NroImovel);
+            socio.Complemento = myTI.ToTitleCase(socio.Complemento);
+            socio.Bairro = myTI.ToTitleCase(socio.Bairro);
+            socio.Cidade = myTI.ToTitleCase(socio.Cidade);
             socio.Uf = socio.Uf.ToUpper();
-            socio.Cep = socio.Cep.ToUpper();
-            socio.Nacionalidade = socio.Nacionalidade.ToUpper();
-            socio.Profissao = socio.Profissao.ToUpper();
-            socio.Rg = socio.Rg.ToUpper();
-            socio.Cpf = socio.Cpf.ToUpper();
+            socio.Cep = myTI.ToTitleCase(socio.Cep);
+            socio.Nacionalidade = myTI.ToTitleCase(socio.Nacionalidade);
+            socio.Profissao = myTI.ToTitleCase(socio.Profissao);
+            socio.Rg = myTI.ToTitleCase(socio.Rg);
+            socio.Cpf = myTI.ToTitleCase(socio.Cpf);
 
             return socio;
         }
