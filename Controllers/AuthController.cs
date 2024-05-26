@@ -73,7 +73,7 @@ namespace CSI_BE.Controllers
             return Problem("Usuário ou senha incorretos");
         }
 
-        private string GerarJwt(string email)
+        private object GerarJwt(string email)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtSettings.Segredo);
@@ -86,7 +86,8 @@ namespace CSI_BE.Controllers
             });
             var encodedToken = tokenHandler.WriteToken(token);
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            return "{ 'Id': '" + userIdClaim + "', 'token': '" + encodedToken + "'}";
+            return new { Id = userIdClaim, 
+                        token= encodedToken};
         }
     }
 }
