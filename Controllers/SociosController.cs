@@ -98,7 +98,7 @@ namespace CSI_BE.Controllers
         [HttpPost("api/socios/")]
         public async Task<ActionResult<Socio>> PostSocio(Socio socio)
         {
-            //socio = FormatarTexto(socio);
+            socio = FormatarTexto(socio);
             _context.Socio.Add(socio);
             await _context.SaveChangesAsync();
 
