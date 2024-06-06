@@ -32,7 +32,7 @@ namespace CSI_BE.Controllers
         }
 
         // GET: api/PessoaJuridicas/7de3028b-50f4-4fe4-82ef-573d31bedee3/5
-        [HttpGet("{id}")]
+        [HttpGet("api/pessoasjuridicas/{userId}/{id}")]
         public async Task<ActionResult<PessoaJuridica>> GetPessoaJuridica(string userId,int id)
         {
             var pessoaJuridica = await _context.PessoaJuridica.Where(e=> e.UserId == userId && e.Id == id).FirstOrDefaultAsync();
