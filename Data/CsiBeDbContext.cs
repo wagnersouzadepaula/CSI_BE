@@ -12,6 +12,7 @@ namespace CSI_BE.Data
         public DbSet<CSI_BE.Models.Cnae> Cnae { get; set; } = default!;
         public DbSet<CSI_BE.Models.Socio> Socio { get; set; } = default!;
         public DbSet<CSI_BE.Models.PessoaJuridica> PessoaJuridica { get; set; } = default!;
+        public DbSet<CSI_BE.Models.ContratoSocial> ContratoSocial { get; set; } = default!;
         
     }
 }

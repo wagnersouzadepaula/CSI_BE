@@ -3,6 +3,7 @@ using System;
 using CSI_BE.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CSI_BE.Migrations
 {
     [DbContext(typeof(CsiBeDbContext))]
-    partial class CsiBeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240630211014_contratoSocial")]
+    partial class contratoSocial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,10 +53,6 @@ namespace CSI_BE.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CodVerificador")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<byte[]>("Pdf")
                         .HasColumnType("bytea");
