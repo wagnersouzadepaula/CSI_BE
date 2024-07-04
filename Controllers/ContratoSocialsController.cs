@@ -26,11 +26,11 @@ namespace CSI_BE.Controllers
         }
 
         // GET: api/ContratoSocials
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<ContratoSocial>>> GetContratoSocial()
-        //{
-        //    return await _context.ContratoSocial.ToListAsync();
-        //}
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ContratoSocial>>> GetContratoSocial()
+        {
+            return await _context.ContratoSocial.ToListAsync();
+        }
 
         // GET: api/ContratoSocials/5
         [HttpGet("{hash}")]
@@ -88,8 +88,8 @@ namespace CSI_BE.Controllers
 
         // POST: api/ContratoSocials
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
         [Authorize]
+        [HttpPost("{id}")]
         public async Task<ActionResult<ContratoSocial>> PostContratoSocial(int id)
         {
 
